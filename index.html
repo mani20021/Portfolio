@@ -1282,4 +1282,36 @@ document.querySelectorAll('[data-about-mode]').forEach(function(btn){
 })();
 </script>
 
+<!-- Ask-about-Mani chat widget: opens Mani's Assistant (manikandan-ux-five.vercel.app) in a panel -->
+<style>
+.mchat-btn{position:fixed;right:22px;bottom:22px;z-index:9997;display:flex;align-items:center;gap:10px;height:56px;padding:0 20px 0 16px;border:0;border-radius:999px;background:var(--primary,#5458ff);color:#fff;font:600 15px Inter,system-ui,sans-serif;box-shadow:0 12px 30px rgba(84,88,255,.35);transition:transform .2s,box-shadow .2s}
+.mchat-btn:hover{transform:translateY(-2px);box-shadow:0 16px 36px rgba(84,88,255,.45)}
+.mchat-btn svg{width:24px;height:24px;flex:none}
+.mchat-btn .dot{position:absolute;top:8px;left:36px;width:10px;height:10px;border-radius:50%;background:#22c55e;border:2px solid #fff}
+.mchat-panel{position:fixed;right:22px;bottom:92px;z-index:9997;width:400px;height:min(640px,calc(100vh - 120px));border-radius:20px;overflow:hidden;background:#fff;box-shadow:0 24px 70px rgba(8,11,27,.28);border:1px solid #dfe7f5;opacity:0;transform:translateY(16px) scale(.98);pointer-events:none;transition:opacity .22s,transform .22s;display:flex;flex-direction:column}
+.mchat-panel.open{opacity:1;transform:none;pointer-events:auto}
+.mchat-head{display:flex;align-items:center;justify-content:space-between;padding:10px 12px 10px 16px;border-bottom:1px solid #eef2f9;font:600 14px Inter,system-ui,sans-serif;color:#080b1b;background:#fff}
+.mchat-head a{color:#59657f;font-weight:500;font-size:13px;text-decoration:none;margin-right:auto;margin-left:10px}
+.mchat-x{width:32px;height:32px;border:0;border-radius:50%;background:#f1f4fa;font-size:18px;line-height:32px;color:#080b1b}
+.mchat-panel iframe{flex:1;width:100%;border:0;display:block}
+@media (max-width:600px){.mchat-btn{right:14px;bottom:14px;height:52px;padding:0 16px 0 14px}.mchat-panel{right:0;bottom:0;width:100%;height:100%;border-radius:0;border:0}}
+@media (prefers-reduced-motion:reduce){.mchat-btn,.mchat-panel{transition:none}}
+</style>
+<button class="mchat-btn" id="mchatBtn" type="button" aria-controls="mchatPanel" aria-expanded="false"><span class="dot" aria-hidden="true"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/><path d="M8.5 11h.01M12 11h.01M15.5 11h.01"/></svg>Ask about Mani</button>
+<div class="mchat-panel" id="mchatPanel" role="dialog" aria-label="Chat with Mani's Assistant">
+  <div class="mchat-head">Mani’s Assistant<a href="https://manikandan-ux-five.vercel.app/" target="_blank" rel="noopener">Open full ↗</a><button class="mchat-x" id="mchatX" type="button" aria-label="Close chat">×</button></div>
+</div>
+<script>
+(function(){
+  var btn=document.getElementById('mchatBtn'),panel=document.getElementById('mchatPanel'),x=document.getElementById('mchatX'),frame=null;
+  function open(){
+    if(!frame){frame=document.createElement('iframe');frame.src='https://manikandan-ux-five.vercel.app/?embed=1';frame.title="Mani's Assistant";frame.allow='clipboard-write';panel.appendChild(frame);}
+    panel.classList.add('open');btn.setAttribute('aria-expanded','true');if(window.innerWidth<=600)btn.style.display='none';
+  }
+  function close(){panel.classList.remove('open');btn.setAttribute('aria-expanded','false');btn.style.display='';btn.focus();}
+  btn.addEventListener('click',function(){panel.classList.contains('open')?close():open();});
+  x.addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&panel.classList.contains('open'))close();});
+})();
+</script>
 </body></html>
